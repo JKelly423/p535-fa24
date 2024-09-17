@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Image, Button} from 'react-native';
+import { StyleSheet, Image, Button, Modal} from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 
 
 export default function TabOneScreen() {
+    const [isModalVisible, setIsModalVisible] = useState(true);
+    let handleModal = () => setIsModalVisible(() => !isModalVisible);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
@@ -13,6 +15,17 @@ export default function TabOneScreen() {
       style={styles.image} />
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Counter/>
+<View style={styles.container}>
+      <Text style={styles.title}>Tab One</Text>
+      <View style={styles.separator} />
+      <Button title="button" onPress={handleModal} />
+      <Modal isVisible={isModalVisible}>
+        <View style={{ flex: 1 }}>
+          <Text>Hello!</Text>
+          <Button title="Hide modal" onPress={handleModal} />
+        </View>
+      </Modal>
+    </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="app/(tabs)/index.tsx" />
     </View>
