@@ -3,38 +3,34 @@ import { View, Text, TextInput, Button, ScrollView, StyleSheet } from 'react-nat
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {createUserWithEmailAndPassword, auth } from '../firebase'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SignUpScreen({navigation, formData, setFormData, setIsSignedUp}) {
-  const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignUp = () => {
-    // would validate here in prod app
-    setIsSignedUp(true);
-    console.log('User Data:', formData);
-    navigation.navigate('SignIn')
-  };
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
 const handleRegister = () => {
-createUserWithEmailAndPassword(auth, formData.email, formData.password)
-    .then((userCredientials) => {
-        //signed in
-        const user = userCredientials.user;
-        console.log('User Registered Successfully: ', user);
-        navigation.navigate('SignIn')
-    })
-    .catch((err) => {
-            alert(err.message)
-    });
+    if (formData.email != '' && formData.password != ''){
+
+        createUserWithEmailAndPassword(auth, formData.email, formData.password)
+            .then((userCredientials) => {
+                //signed in
+                const user = userCredientials.user;
+                console.log('User Registered Successfully:\n', user);
+                console.log('password: ', formData.password)
+                setIsSignedUp(false)
+                navigation.navigate('SignIn')
+            })
+            .catch((err) => {
+                    alert(err.message)
+            });
+    }
 };
 
-useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-        if (user){
-            navigation.replace("LandingPage")
-        }
-    })
-    return unsubscribe;
-}, [])
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || formData.birthdate;
@@ -57,10 +53,17 @@ useEffect(() => {
       <TextInput
         style={styles.input}
         placeholder="Password"
-        secureTextEntry
+        secureTextEntry={!showPassword}
         value={formData.password}
         onChangeText={(text) => setFormData({ ...formData, password: text })}
       />
+    <MaterialCommunityIcons
+        name={showPassword ? 'eye-off' : 'eye'}
+        size={24}
+        color="#aaa"
+        style={styles.icon}
+        onPress={toggleShowPassword}
+    />
       <TextInput
         style={styles.input}
         placeholder="Name"

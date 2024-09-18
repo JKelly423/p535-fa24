@@ -1,46 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, useNavigation } from 'react-native';
 import {auth, signInWithEmailAndPassword} from '../firebase'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SignInScreen({ navigation, setIsLoggedIn, isSignedUp, styles }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = () => {
-    // probably would validate user input here in real prod. app
-    console.log('Username:', username);
-    console.log('Password:', password);
-
-    console.log(auth)
-    // simulate login
-    setIsLoggedIn(true);
-  };
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
 useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
         if (user){
+        setIsLoggedIn(true);
             navigation.replace("LandingPage")
+        } else{
+        setIsLoggedIn(false);
         }
     })
     return unsubscribe;
 }, [])
 
-const handleLogin = async (username, password) => {
-        try{
+const handleLogin = async () => {
+    if (email != '' && password != ''){
+        try {
               //console.log(auth)
-              console.log('username: ',username)
+              console.log('email: ',email)
               console.log('password: ', password)
 
-            const userCrediential = await signInWithEmailAndPassword(auth, username, password);
+            const userCrediential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCrediential.user;
             console.log('User Signed in: ', user);
-            setIsLoggedIn(true);
             return user;
-        } catch (err){
-            console.log(err);
-            throw(err);
+        } catch (err) {
+            console.log('err handling login\n',err);
+            alert(err.message)
         }
-    };
+    }
+};
 
   return (
     <View style={styles.container}>
@@ -49,19 +49,26 @@ const handleLogin = async (username, password) => {
 
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
+        placeholder="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        secureTextEntry
+        secureTextEntry={!showPassword}
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
+      <MaterialCommunityIcons
+          name={showPassword ? 'eye-off' : 'eye'}
+          size={24}
+          color="#aaa"
+          style={styles.icon}
+          onPress={toggleShowPassword}
+      />
 
-      <Button title="Sign In" onPress={handleLogin(username, password)} />
+      <Button title="Sign In" onPress={handleLogin} />
       {!isSignedUp &&
       (<>
         <Text style={styles.title}>Or</Text>

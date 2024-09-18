@@ -11,6 +11,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(false);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,6 +22,7 @@ export default function App() {
     biography: '',
     university: '',
   });
+
   const styles = StyleSheet.create({
       container: {
         flexGrow: 1,
@@ -62,13 +64,14 @@ export default function App() {
         paddingHorizontal: 16,
         width: '100%',
       },
+      icon: {
+          marginLeft: 10,
+      },
     });
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-
-        {!isLoggedIn ? (
-          <>
 
             <Stack.Screen name="SignIn">
               {(props) => (
@@ -86,12 +89,9 @@ export default function App() {
               setIsSignedUp={setIsSignedUp}/>}
             </Stack.Screen>
 
-          </>
-        ) : (
           <Stack.Screen name="LandingPage">
-            {(props) => <LandingPage {...props} styles={styles} formData={formData} />}
+            {(props) => <LandingPage {...props} styles={styles} formData={formData} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />}
           </Stack.Screen>
-        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
