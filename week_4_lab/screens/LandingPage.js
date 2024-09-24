@@ -19,7 +19,7 @@ const handleLogOut = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    { isLoggedIn && (
+    { (
     <>
             <Text style={styles.appTitle}>Jack's Awesome App</Text>
 
