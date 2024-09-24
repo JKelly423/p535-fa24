@@ -3,12 +3,13 @@ import { View, Text, TextInput, Button, useNavigation, ActivityIndicator } from 
 import {auth, signInWithEmailAndPassword} from '../firebase'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import HelloName from '../components/HelloName';
 
 export default function SignInScreen({ navigation, setIsLoggedIn, isSignedUp, styles }) {
   const [email, setEmail] = useState('Email');
   const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState("Name");
+  const [name, setName] = useState(null);
   const [loading, setLoading] = useState(true);
 
     const toggleShowPassword = () => {
@@ -29,6 +30,7 @@ useEffect(() => {
 
             if (savedName){
                 setName(savedName);
+                console.log('User has name saved: ', savedName)
             }
 
             if (savedEmail){
@@ -68,7 +70,9 @@ const handleLogin = async () => {
     <View style={styles.container}>
     <Text style={styles.appTitle}>Jack's Awesome App</Text>
       <Text style={styles.title}>Sign In</Text>
-
+       {name &&  (
+            <HelloName name={name} styles={styles}/>
+       )}
       <TextInput
         style={styles.input}
         placeholder={email}
