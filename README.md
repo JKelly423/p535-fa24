@@ -18,6 +18,7 @@ CSCI-P 535: Pervasive Computing
 ## Week 5: Firestore DB
 ##### [[09/24/2024] - Save profile info to firebase](https://github.com/JKelly423/p535-fa24/commit/326c26ea175b89d0f64aeb30f986b7acb7211168)
 ##### [[09/24/2024] - Remember email for login form](https://github.com/JKelly423/p535-fa24/commit/bd33f300d3fdffb15c7de33e0d208414fc031290)
+##### stopped creating new folders for each week after week 5 so I can see the changes via git diff. The following weeks code is within the `week_5_lab` folder.
 ---
 ## Week 6: Animation and Gestures
 ##### [[10/01/2024] - Logo Animations & Draggable Gesture Component](https://github.com/JKelly423/p535-fa24/commit/d285b7569f6733c6668f4f2b95381941b138068a)
