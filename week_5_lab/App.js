@@ -1,29 +1,18 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StyleSheet, Text } from 'react-native';
 import LandingPage from './screens/LandingPage';
 import SignUpScreen from './screens/SignUpScreen';
 import SignInScreen from './screens/SignInScreen';
+import ImagePickerScreen from './screens/ImagePickerScreen';
+import LocationScreen from './screens/LocationScreen';
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSignedUp, setIsSignedUp] = useState(false);
-
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    name: '',
-    birthdate: new Date(),
-    country: '',
-    gender: '',
-    biography: '',
-    university: '',
-  });
-
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
       container: {
         flexGrow: 1,
         justifyContent: 'center',
@@ -75,6 +64,35 @@ export default function App() {
       },
     });
 
+function HomeDrawer() {
+    return (
+        <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Screen name="Home">
+            {(props) => <LandingPage {...props} styles={styles}/>}
+            </Drawer.Screen>
+            <Drawer.Screen name="Location Page" component={LocationScreen}/>
+            <Drawer.Screen name="Image Picker" component={ImagePickerScreen}/>
+        </Drawer.Navigator>
+    );
+};
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    birthdate: new Date(),
+    country: '',
+    gender: '',
+    biography: '',
+    university: '',
+  });
+
+
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -83,8 +101,6 @@ export default function App() {
               {(props) => (
                 <SignInScreen
                   {...props}
-                  setIsLoggedIn={setIsLoggedIn}
-                  isSignedUp={isSignedUp}
                   styles={styles}
                 />
               )}
@@ -92,12 +108,13 @@ export default function App() {
 
             <Stack.Screen name="SignUp">
               {(props) => <SignUpScreen {...props} formData={formData} setFormData={setFormData}
-              setIsSignedUp={setIsSignedUp}/>}
+              />}
             </Stack.Screen>
 
-          <Stack.Screen name="LandingPage">
-            {(props) => <LandingPage {...props} styles={styles} formData={formData} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />}
-          </Stack.Screen>
+
+            <Stack.Screen name="LandingPage" component={HomeDrawer} options={{headerShown: false}}>
+            </Stack.Screen>
+
       </Stack.Navigator>
     </NavigationContainer>
   );

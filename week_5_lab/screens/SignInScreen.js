@@ -5,8 +5,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HelloName from '../components/HelloName';
 
-export default function SignInScreen({ navigation, setIsLoggedIn, isSignedUp, styles }) {
-  const [email, setEmail] = useState('Email');
+export default function SignInScreen({ navigation, styles }) {
+  const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState(null);
@@ -36,6 +36,8 @@ useEffect(() => {
             if (savedEmail){
                 setEmail(savedEmail);
             console.log('User has email saved: ', savedEmail)
+            } else {
+                console.log('User has no email saved.')
             }
 
         } catch (error){
@@ -75,7 +77,7 @@ const handleLogin = async () => {
        )}
       <TextInput
         style={styles.input}
-        placeholder={email}
+        placeholder={email ?? 'Email'}
         value={email}
         onChangeText={(text) => setEmail(text)}
       />

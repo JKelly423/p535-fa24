@@ -9,7 +9,7 @@ var moment = require('moment');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function SignUpScreen({navigation, formData, setFormData, setIsSignedUp}) {
+export default function SignUpScreen({navigation, formData, setFormData}) {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 

@@ -9,14 +9,13 @@ var moment = require('moment');
 
 
 
-export default function LandingPage({ navigation, styles, formData, setIsLoggedIn, isLoggedIn}) {
+export default function LandingPage({ navigation, styles}) {
 const [userData, setUserData] = useState(null);
 const [loading, setLoading] = useState(true);
 
 const pan = useRef(new Animated.ValueXY()).current;
 
 const handleLogOut = () => {
-    setIsLoggedIn(false);
     auth
         .signOut()
         .then(()=> {
